@@ -47,7 +47,17 @@ int main (int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    printf("%s: %d\n", argv[1], count_lines(argv[1]));
+    int total = 0;
+    for (int i = 1; i < argc; i++)
+    {
+        int l = count_lines(argv[i]);
+        total += l;
+        printf("%s: %d\n", argv[i], l);
+    }
+
+    if (2 < argc) {
+        printf("total: %d\n", total);
+    }
 
     exit(EXIT_SUCCESS);
 }
