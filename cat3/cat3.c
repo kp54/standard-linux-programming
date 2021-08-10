@@ -9,6 +9,13 @@ void die(const char *s)
 }
 
 
+void put_or_die(int c, FILE* f)
+{
+    if (fputc(c, f) == EOF)
+        die(NULL);
+}
+
+
 void cat_file(const char *path)
 {
     FILE *f = fopen(path, "r");
@@ -20,8 +27,22 @@ void cat_file(const char *path)
     int c;
     while ((c = fgetc(f)) != EOF)
     {
-        if (fputc(c, stdout) == EOF)
-            die(path);
+        switch (c)
+        {
+            case '\t':
+                put_or_die('\\', stdout);
+                put_or_die('t', stdout);
+                continue;
+
+            case '\n':
+                put_or_die('$', stdout);
+                put_or_die('\n', stdout);
+                continue;
+
+            default:
+                put_or_die(c, stdout);
+                continue;
+        }
     }
 
     if (ferror(f) != 0)
