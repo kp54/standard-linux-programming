@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
         if (ferror(f) != 0)
         {
-            // fgets -> perror が正しいのか微妙
+            // fgetc -> perror が正しいのか微妙
             // manにはerrnoセットするとは書いてない
             perror(path);
             exit(EXIT_FAILURE);
