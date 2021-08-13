@@ -20,7 +20,7 @@ void do_cat(char *path)
     char *buf[buffer_size];
     while (true)
     {
-        int n = fread(buf, sizeof(typeof(buf[0])), buffer_size, f);
+        int n = fread(buf, sizeof(char), buffer_size, f);
 
         if (n < buffer_size && ferror(f) != 0)
         {
@@ -30,7 +30,7 @@ void do_cat(char *path)
         int wrote = 0;
         while (wrote < n)
         {
-            wrote += fwrite(buf, sizeof(typeof(buf[0])), n, stdout);
+            wrote += fwrite(buf + wrote, sizeof(char), n - wrote, stdout);
             if (ferror(stdout) != 0)
                 die("stdout");
         }
