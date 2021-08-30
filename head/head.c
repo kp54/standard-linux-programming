@@ -31,13 +31,39 @@ static void do_head(FILE *f, long nlines)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2)
+    if (argc < 2)
     {
         fprintf(stderr, "Usage: %s n\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
-    do_head(stdin, atol(argv[1]));
+    long nlines = atol(argv[1]);
+
+    if (argc == 2)
+    {
+        do_head(stdin, nlines);
+        exit(EXIT_SUCCESS);
+    }
+
+    for (int i = 2; i < argc; i++)
+    {
+        char *path = argv[i];
+
+        FILE* fp = fopen(path, "r");
+        if (fp == NULL)
+        {
+            perror(path);
+            exit(EXIT_FAILURE);
+        }
+
+        do_head(fp, nlines);
+
+        if (fclose(fp) == EOF)
+        {
+            perror(path);
+            exit(EXIT_FAILURE);
+        }
+    }
 
     exit(EXIT_SUCCESS);
 }
